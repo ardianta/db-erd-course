@@ -1,0 +1,101 @@
+ @startuml
+left to right direction
+
+Entity user {
+* id: UUID <<PK>>
+--
+* name: varchar
+* email: varchar
+* password: varchar
+photo_url: varchar
+* created_at: datetime
+* updated_at: datetime
+}
+
+Entity course {
+* id: UUID <<PK>>
+--
+* title: varchar
+* cover_url: varchar
+* description: text
+* price_amount: int
+* user_id: UUID << FK >>
+student_count: int
+* is_upcoming: boolean
+* created_at: datetime
+* updated_at: datetime
+}
+
+Entity lesson_section {
+* id: UUID <<PK>>
+--
+* course_id <<FK>>
+* sort_position: int
+* title: varchar
+}
+
+Entity lesson {
+* id: UUID <<PK>>
+--
+* sort_position: int
+* section_id: UUID <<FK>>
+* slug: varchar
+* title: varchar
+* type: Enum('Article', 'Video')
+content
+}
+
+Entity course_progress {
+* id: UUID <<PK>>
+--
+* completed: boolean
+* completed_percent: int
+* course_id: UUID <<FK>>
+* user_id: UUID <<FK>>
+* next_lesson_id
+* next_lesson_slug
+* created_at: datetime
+* updated_at: datetime
+}
+
+Entity enrolled_course {
+* id: UUID <<PK>>
+--
+* user_id: UUID <<FK>>
+* course_id: UUID <<FK>>
+* created_at: datetime
+}
+
+Entity transaction {
+* id: UUID <<PK>>
+--
+* invoice_code: varchar
+* total_amount: number
+* status: ENUM('PENDING', 'PAID', 'CANCELED')
+* user_id: UUID <<FK>>
+* course_id: UUID <<FK>>
+* created_at: datetime
+* updated_at: datetime
+}
+
+Entity certificate {
+* id: UUID <<PK>>
+--
+* user_id: UUID <<FK>>
+* course_id: UUID <<FK>>
+* experied_at: date
+* created_at: datetime
+}
+
+user ||..o{ course : Craete
+user ||..o{ course_progress : Has
+course_progress }|..|| course : Has
+course ||..|{ lesson_section : Has
+lesson_section ||..|{ lesson : Has
+user ||..o{ enrolled_course: Enroll
+course ||..|| enrolled_course: Enrolled
+user ||..o{ transaction : pay enrollment
+course ||..o{ transaction: has
+user ||..o{ certificate : pay enrollment
+course ||..o{ certificate: has
+@enduml
