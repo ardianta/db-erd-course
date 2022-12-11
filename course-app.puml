@@ -1,4 +1,4 @@
- @startuml
+@startuml
 left to right direction
 
 Entity user {
@@ -93,7 +93,7 @@ course_progress }|..|| course : Has
 course ||..|{ lesson_section : Has
 lesson_section ||..|{ lesson : Has
 user ||..o{ enrolled_course: Enroll
-course ||..|| enrolled_course: Enrolled
+course ||..o{ enrolled_course: Enrolled
 user ||..o{ transaction : pay enrollment
 course ||..o{ transaction: has
 user ||..o{ certificate : pay enrollment
